@@ -1,0 +1,2 @@
+This chapter is a recap of the many skills you’ve learned so far and an
+the Rust concepts you now have under your belt.ggVG

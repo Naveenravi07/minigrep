@@ -7,7 +7,7 @@ use::std::env;
 pub struct Config{
     pub  filename:String,
     pub query:String,
-    pub is_case_sensitive:bool
+    pub ignore_cases:bool
 }
 
 impl  Config {
@@ -18,16 +18,16 @@ impl  Config {
         let filename = args[1].clone();
         let query = args[2].clone(); 
         let is_case_sensitive = env::var("IGNORE_CASE").is_ok();
-        Ok(Config {filename, query, is_case_sensitive}) 
+        Ok(Config {filename, query, ignore_cases:is_case_sensitive}) 
     }
 }
 
 pub fn run (config:Config)->Result<(),Box<dyn Error>>{
     let content = fs::read_to_string(config.filename)?;
-    let search_result = if config.is_case_sensitive{
-        search(&content, &config.query)
-    }else{
+    let search_result = if config.ignore_cases{
         search_case_insensitive(&content, &config.query)
+    }else{
+        search(&content, &config.query)
     };
     for line in  search_result{
         println!("{}",line);
